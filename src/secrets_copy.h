@@ -2,7 +2,12 @@
 
 #define SECRET
 
-const char ssid[] = "WiFiSSID";
-const char pass[] = "WiFiPASS";
+const char ssid[] = "XXXXXXXX";
+const char pass[] = "XXXXXXXX";
 
-int8_t TIME_ZONE = -5; //NYC(USA): -5 UTC
+// The MQTT topics that this device should publish/subscribe
+#define MQTT_PUBLISH_TOPIC  "XXXXXXXX"
+
+#define MQTT_SERVER "XXX.XXX.XXX.XXX"
+#define MQTT_USER "XXXXXXXX"
+#define MQTT_PASSWORD "XXXXXXXX"

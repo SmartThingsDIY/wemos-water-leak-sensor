@@ -1,144 +1,121 @@
 /**
   Reads data from a water leakage sensor, and sends it
-  through pins 2 and 3 to a connected ESP-01 WiFi module
+  through MQTT to Home Assistant
   @author MecaHumArduino
   @version 1.0
 */
 
 #include <Arduino.h>
-#include <ArduinoJson.h>
-#include <SoftwareSerial.h>
+#include "secrets.h"
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
 
-#define DEBUG true
-
-// ESP TX => Uno Pin 2
-// ESP RX => Uno Pin 3
-SoftwareSerial esp01(2, 3);
+#define DEBUG false
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 // Sensor pins
-#define sensorPower 7
+#define sensorPower D7
 #define sensorPin A0
 
-// Value for storing water level
-int val = 0;
+int sensorData = 0;
 
 // **************
+void connectToHass();
+void connectToWiFi();
 int readSensor();
-String sendDataToWiFiBoard(String command, const int timeout, boolean debug);
-String prepareDataForWiFi(int level);
 void setup();
 void loop();
 // **************
 
-/**
- * Build and return a JSON document from the sensor data
- * @param level
- * @return
- */
-String prepareDataForWiFi(int level)
+void connectToWiFi()
 {
-  StaticJsonDocument<200> doc;
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-  doc["water_level"] = String(level);
+    if (DEBUG == true) {
+        Serial.println("Connecting to Wi-Fi");
+    }
 
-  char jsonBuffer[512];
-  serializeJson(doc, jsonBuffer);
-
-  return jsonBuffer;
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    if (DEBUG == true) {
+        Serial.println("Connected to Wi-Fi");
+    }
 }
 
-/**
- * Send data through Serial to ESP8266 module
- * @param command
- * @param timeout
- * @param debug
- * @return
- */
-String sendDataToWiFiBoard(String command, const int timeout, boolean debug)
+void connectToHass()
 {
-  String response = "";
-
-  esp01.print(command); // send the read character to the esp8266
-
-  long int time = millis();
-
-  while((time+timeout) > millis()) {
-    while(esp01.available()) {
-      // The esp has data so display its output to the serial window
-      char c = esp01.read(); // read the next character.
-      response+=c;
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    // If you do not want to use a username and password, change next line to
+    // if (client.connect("ESP8266Client")) {
+    if (client.connect("ESP8266Client", MQTT_USER, MQTT_PASSWORD)) {
+      Serial.println("connected");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
     }
   }
-
-  if (debug) {
-    Serial.print(response);
-  }
-
-  return response;
 }
-
 
 /**
  * This is a function used to get the reading
  * @param level
  * @return
  */
-int readSensor() {
-  // Turn the sensor ON
+int readSensor()
+{
+    // Turn the sensor ON
 	digitalWrite(sensorPower, HIGH);
 	delay(10);
-  // Perform the reading
-	val = analogRead(sensorPin);
+    // Perform the reading
+	sensorData = analogRead(sensorPin);
 
-  // Turn the sensor OFF
+    // Turn the sensor OFF
 	digitalWrite(sensorPower, LOW);
 
-  return val;
+  return sensorData;
 }
 
-void setup() {
-  Serial.begin(9600);
-  esp01.begin(9600);
+void setup()
+{
+	Serial.begin(115200);
+    connectToWiFi();
+    client.setServer(MQTT_SERVER, 1883);
 
-	// Set D7 as an OUTPUT
-	pinMode(sensorPower, OUTPUT);
+    // Set D7 as an OUTPUT
+    pinMode(sensorPower, OUTPUT);
 
-	// Set to LOW so no power flows through the sensor
-	digitalWrite(sensorPower, LOW);
-
-	Serial.begin(9600);
+    // Set to LOW so no power flows through the sensor
+    digitalWrite(sensorPower, LOW);
 }
 
-void loop() {
-
-  if (DEBUG == true) {
-    Serial.print("buffer: ");
-    if (esp01.available()) {
-      String espBuf;
-      long int time = millis();
-
-      while((time+1000) > millis()) {
-        while (esp01.available()) {
-          // The esp has data so display its output to the serial window
-          char c = esp01.read(); // read the next character.
-          espBuf += c;
-        }
-      }
-      Serial.print(espBuf);
+void loop()
+{
+    if (!client.connected()) {
+        connectToHass();
     }
-    Serial.println(" endbuffer");
-  }
 
-	// get the reading from the function below and print it
-	int level = readSensor();
+    // get the reading from the function below and print it
+	int waterLevel = readSensor();
 
-  if (DEBUG == true) {
-    Serial.print("Water level: ");
-    Serial.println(level);
-  }
+    if (DEBUG == true) {
+        Serial.print("Water Level: ");
+        Serial.println(waterLevel);
+    }
 
-  String preparedData = prepareDataForWiFi(level);
-  sendDataToWiFiBoard(preparedData, 1000, DEBUG);
+    if (waterLevel > 0) {
+        client.loop();
+        client.publish(MQTT_PUBLISH_TOPIC, String(waterLevel).c_str(), true);
+    }
 
-	delay(5000);
+    delay(10000);
 }
