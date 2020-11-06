@@ -10,7 +10,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-#define DEBUG false
+#define DEBUG true // switch to "false" for production
 WiFiClient espClient;
 PubSubClient client(espClient);
 
