@@ -13,7 +13,7 @@
 
 // ESP TX => Uno Pin 2
 // ESP RX => Uno Pin 3
-SoftwareSerial wifiBoardSerial(2, 3);
+SoftwareSerial esp01(2, 3);
 
 // Sensor pins
 #define sensorPower 7
@@ -58,14 +58,14 @@ String sendDataToWiFiBoard(String command, const int timeout, boolean debug)
 {
   String response = "";
 
-  wifiBoardSerial.print(command); // send the read character to the esp8266
+  esp01.print(command); // send the read character to the esp8266
 
   long int time = millis();
 
   while((time+timeout) > millis()) {
-    while(wifiBoardSerial.available()) {
+    while(esp01.available()) {
       // The esp has data so display its output to the serial window
-      char c = wifiBoardSerial.read(); // read the next character.
+      char c = esp01.read(); // read the next character.
       response+=c;
     }
   }
@@ -98,7 +98,7 @@ int readSensor() {
 
 void setup() {
   Serial.begin(9600);
-  wifiBoardSerial.begin(9600);
+  esp01.begin(9600);
 
 	// Set D7 as an OUTPUT
 	pinMode(sensorPower, OUTPUT);
@@ -113,14 +113,14 @@ void loop() {
 
   if (DEBUG == true) {
     Serial.print("buffer: ");
-    if (wifiBoardSerial.available()) {
+    if (esp01.available()) {
       String espBuf;
       long int time = millis();
 
       while((time+1000) > millis()) {
-        while (wifiBoardSerial.available()) {
+        while (esp01.available()) {
           // The esp has data so display its output to the serial window
-          char c = wifiBoardSerial.read(); // read the next character.
+          char c = esp01.read(); // read the next character.
           espBuf += c;
         }
       }
