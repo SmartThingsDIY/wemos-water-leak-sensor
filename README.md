@@ -1,4 +1,4 @@
-# Water Leakage Sensor For Home Assistant
+# Water Leakage Sensor For Home Assistant (Or any MQTT based system)
 
 This repo accompanies the "Connected Weather Station" YouTube series. it contains the code, library, diagrams, and more information that I promised in the videos.
 
@@ -11,7 +11,7 @@ This episode shows you how to use the [DHT11](https://amzn.to/2Qs9fcV) temperatu
 
 <img align="right" src="https://images-na.ssl-images-amazon.com/images/I/61sU-gLZncL._AC_SL1001_.jpg" style="max-width:100%;" height="400">
 
-*   [ESP8266 ESP-12F](https://www.amazon.com/IZOKEE-NodeMcu-Internet-Development-Compatible/dp/B076F52NQD/ref=sr_1_5?crid=1DNDEPDE0UUY8&dchild=1&keywords=esp12f&sprefix=esp12%2Caps%2C170&sr=8-5)
+*   [WEMOS D1 mini (ESP8266 ESP-12F)](https://www.amazon.com/IZOKEE-NodeMcu-Internet-Development-Compatible/dp/B076F52NQD/ref=sr_1_5?crid=1DNDEPDE0UUY8&dchild=1&keywords=esp12f&sprefix=esp12%2Caps%2C170&sr=8-5)
 *   [Water Level Sensor](https://www.amazon.com/Sensor-Module-Detection-Surface-Arduino%EF%BC%8810pcs%EF%BC%89/dp/B07THDH7Y4/ref=sr_1_7?dchild=1&keywords=6+Pack+Water+Level+Sensor%2C+Droplet+Depth+Detection+Sensor+for+Arduino&sr=8-7)
 *   [100pcs Double Sided PCB Board Kit](https://www.amazon.com/Smraza-Soldering-Electronic-Compatible-Prototype/dp/B07NM68FXK/ref=sr_1_2?dchild=1&keywords=smraza+100pcs+pcb+board&sr=8-2)
 *   [Breadboard](https://amzn.to/2Ei40tP) - [Jumper Wires](https://amzn.to/2Ehh2ru) - [Male to Male Jumper Wires + Tweezer](https://amzn.to/3jcf9eX)
