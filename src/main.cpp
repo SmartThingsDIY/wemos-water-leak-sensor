@@ -1,6 +1,6 @@
 /**
-  Reads data from a water leakage sensor, and sends it
-  through MQTT to Home Assistant
+  WEMOS board stays asleep until it awoke by the water sensor when the latter detects water.
+  Once awake, it connects to WiFi, then sends an alarm to an MQTT topic
   @author MecaHumArduino
   @version 1.0
 */
@@ -141,8 +141,9 @@ void setup()
     }
 
     // publish the reading to Hass through MQTT
-    if (waterLevel > 0) {
+    if (waterLevel > 2) {
         client.publish(MQTT_PUBLISH_TOPIC, String(waterLevel).c_str(), true);
+        client.loop();
     }
 
     // Waking time
