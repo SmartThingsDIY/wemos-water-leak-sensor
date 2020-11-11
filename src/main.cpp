@@ -1,6 +1,6 @@
 /**
-  Reads data from a water leakage sensor, and sends it
-  through MQTT to Home Assistant
+  Reads data from a water leakage sensor. When water is detected
+  an alarm is sent to an MQTT Topic
   @author MecaHumArduino
   @version 1.0
 */
@@ -112,7 +112,7 @@ void loop()
         Serial.println(waterLevel);
     }
 
-    if (waterLevel > 0) {
+    if (waterLevel > 2) {
         client.loop();
         client.publish(MQTT_PUBLISH_TOPIC, String(waterLevel).c_str(), true);
     }
