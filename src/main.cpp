@@ -117,5 +117,5 @@ void loop()
         client.publish(MQTT_PUBLISH_TOPIC, String(waterLevel).c_str(), true);
     }
 
-    delay(10000);
+    delay(1000);
 }
