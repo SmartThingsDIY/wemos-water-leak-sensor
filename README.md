@@ -9,6 +9,8 @@ BUY VS BUILD
 ========
 You can always go ahead and buy a ready-to-use a solution like this [CONNECTIFY Smart Water Leakage Sensor](https://www.amazon.ca/gp/product/B07TDCTQDN/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) but these devices usually would only work with their respective apps, and some of them would require you to pay extra in order to receive push notifications. Now, this article and its video provide a step-by-step guide and links to everything you need to build the same device for **3x cheaper** than the cheapest option available.
 
+<img align="right" src="https://images-na.ssl-images-amazon.com/images/I/51BVI1yCFPL._AC_SL1001_.jpg" style="max-width:100%;" height="400">
+
 In addition to detecting water leakage and sending notifications. This device:
 * Goes to deep sleep and only wakes up every 30sec (configurable) to save energy
 * When water is detected, only then, the connection to WiFi is made, again, to save energy
