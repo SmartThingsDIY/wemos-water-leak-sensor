@@ -40,6 +40,25 @@ void tick()
     digitalWrite(LED_BUILTIN, !state);     // set pin to the opposite state
 }
 
+/**
+ * This is a function used to get the reading
+ * @param level
+ * @return
+ */
+int readSensor()
+{
+    // Turn the sensor ON
+	digitalWrite(sensorPower, HIGH);
+	delay(10);
+    // Perform the reading
+	sensorData = analogRead(sensorPin);
+
+    // Set to LOW to turn the sensor OFF
+	digitalWrite(sensorPower, LOW);
+
+  return sensorData;
+}
+
 void connectToWiFi()
 {
     int _try = 0;
@@ -94,25 +113,6 @@ void connectToHass()
     }
 }
 
-/**
- * This is a function used to get the reading
- * @param level
- * @return
- */
-int readSensor()
-{
-    // Turn the sensor ON
-	digitalWrite(sensorPower, HIGH);
-	delay(10);
-    // Perform the reading
-	sensorData = analogRead(sensorPin);
-
-    // Set to LOW to turn the sensor OFF
-	digitalWrite(sensorPower, LOW);
-
-  return sensorData;
-}
-
 void publishAlarmToHass(int waterLevel)
 {
     // publish the reading to Hass through MQTT
@@ -122,6 +122,7 @@ void publishAlarmToHass(int waterLevel)
         Serial.println("Alarm sent to Hass!");
     }
 }
+
 void setup()
 {
     if (DEBUG == true) {
