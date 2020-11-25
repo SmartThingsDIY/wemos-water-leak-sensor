@@ -86,7 +86,7 @@ THE WIRING
 ==========
 The wiring is pretty straightforward. Please follow the diagram bellow. Also, here are some notes that might help you figure it out:
 
-<img align="center" src="https://github.com/MecaHumArduino/wemos-water-leak-sensor/blob/main/doc/the_wiring.png?raw=true" style="max-width:100%;" height="500">
+<img align="center" src="https://github.com/MecaHumArduino/wemos-water-leak-sensor/blob/main/doc/the_wiring.png?raw=true" style="max-width:100%;" height="411">
 
 
 * **Blue** wire connecting RST and D0: Required to allow the WEMOS board to go to sleep.
@@ -108,7 +108,72 @@ PubSubClient client(espClient);
 ```
 
 Then we declare a few variables like the Arduino pins for the sensor reading and power, as long as the sleep duration and number of tries we aim to do while connecting to WiFi because we want to avoid draining the battery trying to connect to WiFi indefinitely.
+
+```cpp
 #define sensorPower D7 // Power pin
 #define sensorPin A0 // Analog Sensor pins
 #define durationSleep 30 // seconds
 #define NB_TRYWIFI 20 // WiFi connection retries
+```
+
+Then we declare a few variables like the Arduino pins for the sensor reading and power, as long as the sleep duration and number of tries we aim to do while connecting to WiFi because we want to avoid draining the battery trying to connect to WiFi indefinitely.
+
+```cpp
+#define sensorPower D7 // Power pin
+#define sensorPin A0 // Analog Sensor pins
+#define durationSleep 30 // seconds
+#define NB_TRYWIFI 20 // WiFi connection retries
+```
+
+As you might have noticed, there is no `loop()` function in this sketch, only a `setup()` function, and that's because instead of executing some commands in a loop fashion like most Arduino projects, this board is programmed to go to sleep until its wake up moment arrives, in which case, it will executing everything until `setup()` function before going back to sleep again. Here is how it's programmed:
+
+```cpp
+void setup()
+{
+    // only print debug messages to serial if we're in debug mode
+    if (DEBUG == true) {
+        Serial.print("Waking up ");
+    }
+
+    // Step 1: Set D7 pin as an output pin ready to receive power
+    pinMode(sensorPower, OUTPUT); // Set D7 as an OUTPUT
+    digitalWrite(sensorPower, LOW);
+
+    ...
+
+    // Step 2: Wake the sensor up & get a reading
+    int waterLevel = readSensor();
+
+    ...
+
+    // Step 3: If water is detected then
+    if (waterLevel > 1) {
+        connectToWiFi(); // 1- connect to WiFi
+        connectToHass(); // 2- connect to Home Assistant MQTT broker
+        publishAlarmToHass(waterLevel); // 3- publish the water level on the MQTT topic
+    }
+
+    // Step 4: Go back to sleep for the next 30 sec
+    ESP.deepSleep(durationSleep * 1000000);
+
+}
+```
+
+The function that reads the water level is straightforward and well documented as well:
+
+```cpp
+int readSensor()
+{
+    // Step 1 : Turn the sensor ON by providing power to D7 pin
+	digitalWrite(sensorPower, HIGH);
+    // Step 2 : Wait for a just little bit
+	delay(10);
+    // Step 3 : Perform the reading
+	sensorData = analogRead(sensorPin);
+
+    // Step 4 : Turn the sensor OFF
+	digitalWrite(sensorPower, LOW);
+
+  return sensorData;
+}
+```

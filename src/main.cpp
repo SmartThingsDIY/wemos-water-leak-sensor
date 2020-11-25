@@ -42,23 +42,27 @@ void tick()
 
 /**
  * This is a function used to get the reading
- * @param level
  * @return
  */
 int readSensor()
 {
-    // Turn the sensor ON
+    // Step 1 : Turn the sensor ON by providing power to D7 pin
 	digitalWrite(sensorPower, HIGH);
+    // Step 2 : Wait for a just little bit
 	delay(10);
-    // Perform the reading
+    // Step 3 : Perform the reading
 	sensorData = analogRead(sensorPin);
 
-    // Set to LOW to turn the sensor OFF
+    // Step 4 : Turn the sensor OFF
 	digitalWrite(sensorPower, LOW);
 
   return sensorData;
 }
 
+/**
+ * Establishes WiFi connection
+ * @return
+ */
 void connectToWiFi()
 {
     int _try = 0;
@@ -85,6 +89,10 @@ void connectToWiFi()
     }
 }
 
+/**
+ * Establishes connection to Home Assistant MQTT Broker
+ * @return
+ */
 void connectToHass()
 {
     client.setServer(MQTT_SERVER, 1883);
@@ -113,6 +121,10 @@ void connectToHass()
     }
 }
 
+/**
+ * Publishes notification to MQTT topic
+ * @return
+ */
 void publishAlarmToHass(int waterLevel)
 {
     // publish the reading to Hass through MQTT
@@ -125,35 +137,39 @@ void publishAlarmToHass(int waterLevel)
 
 void setup()
 {
+    // only print debug messages to serial if we're in debug mode
     if (DEBUG == true) {
         Serial.print("Waking up ");
     }
 
-    pinMode(sensorPower, OUTPUT); // Set D7 as an OUTPUT
+    // Step 1: Set D7 pin as an output pin ready to receive power
+    pinMode(sensorPower, OUTPUT);
     digitalWrite(sensorPower, LOW);
 
     ticker.attach(0.5, tick);
 
 	Serial.begin(115200);
 
-    // Wake up the leak sensor & get a reading
+    // Step 2: Wake the sensor up & get a reading
     int waterLevel = readSensor();
+
     if (DEBUG == true) {
         Serial.print("Water Level: ");
         Serial.println(waterLevel);
     }
 
-    // If water is detected
+    // Step 3: If water is detected then
     if (waterLevel > 1) {
-        connectToWiFi();
-        connectToHass();
-        publishAlarmToHass(waterLevel);
+        connectToWiFi(); // 1- connect to WiFi
+        connectToHass(); // 2- connect to Home Assistant MQTT broker
+        publishAlarmToHass(waterLevel); // 3- publish the water level on the MQTT topic
     }
 
     if (DEBUG == true) {
         Serial.println("Going to deep sleep now");
     }
 
+    // Step 4: Go back to sleep for the next 30 sec
     ESP.deepSleep(durationSleep * 1000000);
 }
 
