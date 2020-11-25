@@ -97,9 +97,11 @@ The wiring is pretty straightforward. Please follow the diagram bellow. Also, he
 To overcome this, I recommend that you do not power the sensor constantly, but power it only when you take the readings.
 An easy way to accomplish this is to connect the VCC pin to a digital pin of an Arduino and set it to HIGH or LOW as per requirement. So, we'll connect the VCC pin to the digital pin #7 of an Arduino.
 
+Wiring source files are included under [wiring folder](https://github.com/MecaHumArduino/wemos-water-leak-sensor/tree/main/doc/wiring)
+
 3D PRINTED CASE
 ==========
-No one likes wires hanging around, and so I included the source and STL files for the 3D case I prepared for this project. All of it is under `3d` folder and you can do whatever the heck you want with it.
+No one likes wires hanging around, and so I included the source and STL files for the 3D case I prepared for this project. All of it is under [3d folder](https://github.com/MecaHumArduino/wemos-water-leak-sensor/tree/main/doc/3d) folder and you can do whatever the heck you want with it.
 
 THE CODE
 ========
