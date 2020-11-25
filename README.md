@@ -56,7 +56,7 @@ So without further ado, let's start with a list of all hardware components, Apps
 
 Hardware Overview: Water Sensor
 ===============
-<img align="right" src="https://lastminuteengineers.com/wp-content/uploads/arduino/Water-Level-Sensor-Working.gif" style="max-width:100%;" height="350">
+<img align="right" src="https://github.com/MecaHumArduino/wemos-water-leak-sensor/blob/main/doc/Water-Level-Sensor-Working.gif?raw=true" style="max-width:100%;" height="350">
 
 This [Water Level Sensor Module](https://www.amazon.com/Sensor-Module-Detection-Surface-Arduino%EF%BC%8810pcs%EF%BC%89/dp/B07THDH7Y4/ref=sr_1_7?dchild=1&keywords=6+Pack+Water+Level+Sensor%2C+Droplet+Depth+Detection+Sensor+for+Arduino&sr=8-7) has a series of ten exposed copper traces, five of which are power traces and five are sense traces.
 These traces are interlaced so that there is one sense trace between every two power traces.
@@ -94,10 +94,14 @@ The wiring is pretty straightforward. Please follow the diagram bellow. Also, he
 To overcome this, I recommend that you do not power the sensor constantly, but power it only when you take the readings.
 An easy way to accomplish this is to connect the VCC pin to a digital pin of an Arduino and set it to HIGH or LOW as per requirement. So, we'll connect the VCC pin to the digital pin #7 of an Arduino.
 
+3D PRINTED CASE
+==========
+No one likes wires hanging around, and so I included the source and STL files for the 3D case I prepared for this project. All of it is under `3d` folder and you can do whatever the heck you want with it.
+
 THE CODE
 ========
 
-The code within `main.cpp` file is well documented, but I'll try to explain the concepts and ideas behind the code in this section.
+The code within `main.cpp` file is well documented, but I'll try to explain the concepts and ideas behind the code in this section. But first of all, copy the file `secrets_copy.h` to `secrets.h` and edit its content with your details: WiFi credentials, Home Assistant details...
 
 The sketch begins with the creation of a few objects we'll need along the way: `Ticker` that calls repeating actions and which we will use to put the board to sleep and then wake up. `WiFiClient` that we use to connect to Wifi and `PubSubClient` that we use to send data through MQTT
 
