@@ -3,7 +3,7 @@ Or any MQTT based system
 
 About
 =====
-This article accompanies the "DIY Water Leakage Sensor" YouTube series. it contains the code, libraries, diagrams, 3D print files and more information that I promised in the videos: [**DIY Water Leakage Sensor For Home Assistant**](https://youtu.be/vL6TKYhjwQc)
+This article accompanies the "DIY Water Leakage Sensor" YouTube series. it contains the code, libraries, diagrams, 3D print files and more information that I promised in the videos: [**DIY Water Leakage Sensor For Home Assistant**](https://youtu.be/6FVJRkGDwwI)
 
 BUY VS BUILD
 ========
