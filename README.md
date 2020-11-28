@@ -125,15 +125,6 @@ Then we declare a few variables like the Arduino pins for the sensor reading and
 #define NB_TRYWIFI 20 // WiFi connection retries
 ```
 
-Then we declare a few variables like the Arduino pins for the sensor reading and power, as long as the sleep duration and number of tries we aim to do while connecting to WiFi because we want to avoid draining the battery trying to connect to WiFi indefinitely.
-
-```cpp
-#define sensorPower D7 // Power pin
-#define sensorPin A0 // Analog Sensor pins
-#define durationSleep 30 // seconds
-#define NB_TRYWIFI 20 // WiFi connection retries
-```
-
 As you might have noticed, there is no `loop()` function in this sketch, only a `setup()` function, and that's because instead of executing some commands in a loop fashion like most Arduino projects, this board is programmed to go to sleep until its wake up moment arrives, in which case, it will executing everything until `setup()` function before going back to sleep again. Here is how it's programmed:
 
 ```cpp
