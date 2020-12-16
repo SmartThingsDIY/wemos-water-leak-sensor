@@ -3,7 +3,11 @@ Or any MQTT based system
 
 About
 =====
-This article accompanies the "DIY Water Leakage Sensor" YouTube series. it contains the code, libraries, diagrams, 3D print files and more information that I promised in the videos: [**DIY Water Leakage Sensor For Home Assistant**](https://youtu.be/6FVJRkGDwwI)
+This article accompanies the "DIY Water Leakage Sensor" YouTube series.
+
+It contains the code, libraries, diagrams, 3D print files and more information that I promised in the videos:
+
+[<img align="center" src="https://github.com/MecaHumArduino/wemos-water-leak-sensor/blob/main/doc/youtube-thumb.jpg?raw=true" style="max-width:100%;" height="400">](https://youtu.be/6FVJRkGDwwI)
 
 BUY VS BUILD
 ========
@@ -15,7 +19,7 @@ In addition to detecting water leakage and sending notifications. This device:
 * Goes to deep sleep and only wakes up every 30sec (configurable) to save energy
 * When water is detected, only then, the connection to WiFi is made, again, to save energy
 * Has a removable LiPo battery for easy of charge
-* Clever wiring of the water sensor to extend it's life expectancy (more details in the wiring section)
+* Clever wiring of the water sensor to extend its life expectancy (more details in the wiring section)
 * Sends notifications (and any type of data) to an MQTT topic, enlarging the possibilities of what you can do with the data
 
 In my case, I will be sending the notifications to my [Home Assistant](https://www.home-assistant.io/) setup in order to trigger a pre-defined automation that:
