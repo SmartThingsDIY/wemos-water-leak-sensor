@@ -7,7 +7,7 @@ This article accompanies the "DIY Water Leakage Sensor" YouTube series.
 
 It contains the code, libraries, diagrams, 3D print files and more information that I promised in the videos:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6FVJRkGDwwI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[<img align="center" src="https://github.com/MecaHumArduino/wemos-water-leak-sensor/blob/main/doc/youtube-thumb.jpg?raw=true" style="max-width:100%;" height="400">](https://youtu.be/6FVJRkGDwwI)
 
 BUY VS BUILD
 ========
